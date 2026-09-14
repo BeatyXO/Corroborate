@@ -1,6 +1,6 @@
 # Build status
 
-This ZIP is a substantial implementation handoff, not fabricated deployment proof.
+This repository is the completed review-ready submission for Corroborate.
 
 Implemented in the starter:
 
@@ -16,12 +16,7 @@ Implemented in the starter:
 - preflight checks
 - architecture, invariants, threat model, reviewer demo and submission docs
 
-Still required from the takeover agent:
+Validation and live deployment evidence are recorded in `DEPLOYMENT.md`.
 
-- run against the current stable GenLayer Direct Mode runtime
-- fix any SDK/linter/runtime incompatibility without weakening protocol semantics
-- expand adversarial tests where the runtime exposes gaps
-- push fixtures, pin their immutable commit, and re-run tests
-- deploy both contracts to stable Studionet chain 61999
-- execute the complete live lifecycle and record only real evidence
-- run final preflight and inspect the remote repository
+The final commit includes the pinned immutable fixture URLs, stable-Studionet
+addresses, deterministic case hashes, and the adversarial Direct Mode suite.

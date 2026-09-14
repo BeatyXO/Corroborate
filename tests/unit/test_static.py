@@ -31,3 +31,16 @@ def test_consumer_is_typed_and_replay_protected():
     assert "@gl.contract_interface" in GATE
     assert "is_corroborated" in GATE
     assert "protected action was already executed" in GATE
+
+
+def test_validator_re_evaluates_source_and_pair():
+    assert "own = self._parse_assessment(leader_fn())" in CORR
+    assert "own = self._parse_relation(leader_fn())" in CORR
+    assert "gl.nondet.web.get(left_url)" in CORR
+    assert "gl.nondet.web.get(right_url)" in CORR
+
+
+def test_fail_closed_and_cross_case_guards_are_present():
+    assert '"DEPENDENCE_AMBIGUOUS"' in CORR
+    assert "pair must belong to one case" in CORR
+    assert "matrix incomplete" in CORR

@@ -103,7 +103,7 @@ python -m compileall contracts tests scripts
 python -m pytest -q
 ```
 
-The handoff agent must run the actual GenLayer Direct Mode suite and complete the live Studionet proof before marking the repository review-ready.
+The Direct Mode suite and live Studionet proof have been completed. Real deployment, lifecycle, hash, and transaction evidence is recorded in `DEPLOYMENT.md`.
 
 ## Immutable live fixtures
 

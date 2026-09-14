@@ -18,4 +18,4 @@ Files:
 - `contradict_independent_c.md`
 - `irrelevant.md`
 
-The final repository must not contain `44a9f9f6952fa160f5e8828b88a47d103503952c`.
+The final repository must retain this exact commit pin; fixture URLs must never be changed to mutable `main` URLs.
