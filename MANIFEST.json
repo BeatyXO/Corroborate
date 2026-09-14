@@ -1,6 +1,6 @@
 {
   "name": "Corroborate",
-  "version": "0.1.0-handoff",
+  "version": "0.1.0",
   "files": [
     ".env.example",
     ".github/workflows/ci.yml",

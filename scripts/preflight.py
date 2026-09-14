@@ -48,7 +48,7 @@ def main():
     if "61997" in config_text or "studio-dev.genlayer.com" in config_text:
         errors += fail("gltest config must not target Studio development preview")
     if args.final:
-        if "FIXTURE_COMMIT_PLACEHOLDER" in all_text:
+        if re.search(r"FIXTURE_[A-Z]+_PLACEHOLDER", all_text):
             errors += fail("immutable fixture commit is not pinned")
         deployment = (ROOT / "DEPLOYMENT.md").read_text(encoding="utf-8")
         if "`TBD`" in deployment:

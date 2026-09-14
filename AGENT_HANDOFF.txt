@@ -82,7 +82,7 @@ After the first real commit containing `fixtures/` is pushed:
     `python scripts/pin_fixture_commit.py <FULL_COMMIT_SHA>`
 24. confirm `docs/LIVE_FIXTURES.md` now contains immutable raw GitHub URLs pinned to that commit;
 25. commit and push the pin;
-26. ensure `FIXTURE_COMMIT_PLACEHOLDER` is absent before final submission.
+26. ensure the fixture URL placeholder is absent before final submission.
 
 Do not point the live proof at mutable `main` URLs.
 

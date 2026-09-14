@@ -86,7 +86,7 @@ See `docs/INVARIANTS.md`. The most important are:
 
 ## Network
 
-The handoff targets stable GenLayer Studionet:
+The submission targets stable GenLayer Studionet:
 
 - alias: `studionet`
 - chain ID: `61999`
@@ -107,7 +107,7 @@ The Direct Mode suite and live Studionet proof have been completed. Real deploym
 
 ## Immutable live fixtures
 
-`fixtures/` contains small public-source fixtures for a reproducible live demonstration. `scripts/pin_fixture_commit.py` replaces `FIXTURE_COMMIT_PLACEHOLDER` with the first real 40-character Git commit containing those fixtures, so live raw GitHub URLs are immutable.
+`fixtures/` contains small public-source fixtures for a reproducible live demonstration. `scripts/pin_fixture_commit.py` pins their raw GitHub URLs to the first real 40-character Git commit containing those fixtures.
 
 ## Repository boundary
 
