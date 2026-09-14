@@ -31,6 +31,17 @@ All entries below are from the stable Studionet lifecycle executed on 2026-09-14
 - Wrong definition/finalization rejection: attempted with real wrong-definition inputs; the Studionet CLI reported consensus completion, but the filtered output did not retain the contract-level error payload.
 - Replay rejection: not separately retained in the initial run.
 
+The live Studionet proof above is intentionally separate from the Direct Mode
+consumer proof below. Missing live CLI transaction IDs and contract-level error
+receipts are not inferred or replaced.
+
+## Direct Mode EvidenceGate proof
+
+The pinned two-contract Direct Mode test now verifies, against the existing
+contract behavior, successful `ICoroborate.view()` authorization, wrong
+definition-hash rejection, wrong finalization-hash rejection, and action replay
+rejection. This is test-harness evidence, not additional Studionet transactions.
+
 ## Final hashes and counts
 
 - Definition hash: `d44bac77f8a5572e069dcab08e5962da7a11869be8879f0283cefbe9259d09b4`
@@ -47,6 +58,8 @@ All entries below are from the stable Studionet lifecycle executed on 2026-09-14
 ## Test evidence
 
 - `python scripts/preflight.py`: passed before live execution.
-- `python -m pytest -q`: `16 passed in 1.99s`.
+- `python -m pytest -q`: `25 passed`.
 - `python -m compileall -q contracts tests scripts`: passed.
+- GenVM lint: passed for `contracts/corroborate.py` — `Lint passed (3 checks)`, `Validation passed`; passed for `contracts/evidence_gate.py` — `Lint passed (3 checks)`, `Validation passed`.
+- Fresh-clone final preflight: `python scripts/preflight.py --final` — `Preflight passed.`
 - GenLayer CLI: `genlayer 0.39.2`; network verified as `studionet`, chain `61999`, RPC `https://studio.genlayer.com/api` before every write.
