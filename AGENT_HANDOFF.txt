@@ -1,0 +1,164 @@
+You are taking over a substantially implemented GenLayer Intelligent Contract repository named Corroborate.
+Do not return only a plan, checklist, commentary, or mockup. Inspect the entire unzipped repository first, then finish it to a review-ready state in the existing folder and push the completed work to:
+https://github.com/BeatyXO/Corroborate.git
+
+The remote repository was created for this codebase. Preserve the product architecture unless an actual current stable GenLayer runtime/test failure proves a change is necessary.
+
+PRODUCT BOUNDARY
+Corroborate is a standalone reusable Intelligent Contract primitive, not a full application.
+There must be no frontend, backend, database, dashboard, or off-chain adjudication service.
+
+Corroborate solves source-count inflation in evidence systems. A case freezes a proposition/context and an independent-cluster threshold. Evidence URLs are sealed into an immutable evidence set. GenLayer consensus performs only two substantive semantic jobs:
+
+1. classify each independently fetched source as SUPPORTS, CONTRADICTS, IRRELEVANT, UNAVAILABLE, or AMBIGUOUS relative to the frozen proposition/context;
+2. classify every unordered pair of countable evidence as INDEPENDENT, LEFT_DERIVED_FROM_RIGHT, RIGHT_DERIVED_FROM_LEFT, SHARED_ORIGIN, or DEPENDENCE_AMBIGUOUS.
+
+The final corroboration result must remain deterministic. All non-INDEPENDENT pair relations, including DEPENDENCE_AMBIGUOUS, create lineage edges. The contract computes connected components over those edges, aggregates each component to SUPPORT, CONTRADICTION, or MIXED, and applies the frozen threshold. Raw evidence count must never become quorum.
+
+Do not collapse the product into “AI decides whether the proposition is true.” Corroborate measures independent corroboration; it does not claim philosophical truth.
+
+NON-NEGOTIABLE NETWORK
+Use stable Studionet only:
+- network alias: studionet
+- chain ID: 61999
+- RPC: https://studio.genlayer.com/api
+- explorer: https://explorer-studio.genlayer.com
+Do not switch to Studio development preview, local-only proof, or another network to make tooling easier.
+Before every live deploy/write workflow, verify the effective network and confirm chain ID 61999.
+
+REQUIRED WORK
+
+1. Read README.md, SUBMISSION.md, DEPLOYMENT.md, BUILD_STATUS.md, every file under docs/, both contracts, every test, every fixture, gltest.config.yaml, and all scripts before editing.
+2. Run `python scripts/preflight.py` immediately and record the real result.
+3. Install the repository's pinned GenLayer test tooling and run all Direct Mode tests.
+4. Run Python compilation and the GenVM linter supported by the current stable toolchain.
+5. Fix actual failures completely. Do not delete, skip, xfail, weaken, or rewrite tests merely to make them green.
+6. Review `contracts/corroborate.py` for current stable GenLayer SDK/runtime compatibility, storage safety, public method ABI safety, timestamp handling, event behavior, nondeterministic-block legality, web-access legality, URL safety, bounded loops, parser robustness, and deterministic hashing.
+7. Keep the current stable `py-genlayer` dependency unless stable Studionet itself proves it must change. Never migrate to another Studio environment as a workaround.
+8. Preserve substantive validator independence. For both evidence stance and pair independence classification, validators must independently fetch/re-evaluate the source material. Leader-output-only schema/enum validation is forbidden.
+9. Preserve the narrow semantic boundary. The LLM may classify evidence stance and pair dependence only. It must never compute cluster membership, quorum counts, threshold satisfaction, or the final case verdict.
+10. Preserve the frozen case definition and post-seal evidence membership. No evidence may be added after sealing.
+11. Preserve duplicate normalized-URL rejection within a case.
+12. Preserve the complete countable-pair matrix requirement. `finalize_case` must reject if any unordered pair among SUPPORTS/CONTRADICTS evidence lacks a valid consensus-backed relation.
+13. Preserve positive independence: only explicit INDEPENDENT may keep two countable items in separate components. DEPENDENCE_AMBIGUOUS must fail closed and may not increase independent cluster count.
+14. Preserve deterministic connected-component semantics. The component/root identity must not depend on transaction ordering or arbitrary LLM-generated identifiers. Minimum evidence ID is the intended canonical root unless stable runtime constraints require an equivalent deterministic representation.
+15. Preserve mixed-lineage neutrality. If one information lineage contains both support and contradiction, that component must count toward neither side.
+16. Preserve the deterministic verdict rules:
+    - both sides >= threshold -> CONTESTED
+    - support only >= threshold -> SUPPORT_CORROBORATED
+    - contradiction only >= threshold -> CONTRADICTION_CORROBORATED
+    - otherwise -> INSUFFICIENT
+17. Preserve finalization immutability and exact result pinning.
+18. Review `contracts/evidence_gate.py` and make sure it performs a real typed IC-to-IC view call to `is_corroborated(case_id, expected_definition_hash, expected_finalization_hash, required_side)` and rejects replayed `action_hash` values.
+19. Add any missing adversarial Direct Mode tests a reviewer would reasonably expect, especially around:
+    - forged or malformed leader results;
+    - validator disagreement;
+    - source fetch failure;
+    - prompt injection in fetched evidence;
+    - duplicate URLs with fragments/case normalization;
+    - cross-case pair attempts;
+    - pair direction canonicalization;
+    - incomplete pair matrix;
+    - ambiguous dependence failing closed;
+    - transitive lineage collapse (A derived from B, B shares origin with C);
+    - mixed support/contradiction inside one lineage;
+    - irrelevant/unavailable evidence excluded from the required matrix;
+    - threshold boundary cases;
+    - wrong definition hash;
+    - wrong finalization hash;
+    - gate action replay.
+20. Keep all loops and evidence limits reviewer-safe and bounded. Do not make finalization unbounded merely for theoretical generality.
+21. Do not invent contract addresses, transaction hashes, passing test counts, CI results, or live proof.
+
+GITHUB + IMMUTABLE FIXTURES
+The repository target is:
+BeatyXO/Corroborate
+
+The `fixtures/` directory is intentionally designed for a reproducible live lifecycle.
+After the first real commit containing `fixtures/` is pushed:
+
+22. obtain that exact full 40-character commit SHA;
+23. run:
+    `python scripts/pin_fixture_commit.py <FULL_COMMIT_SHA>`
+24. confirm `docs/LIVE_FIXTURES.md` now contains immutable raw GitHub URLs pinned to that commit;
+25. commit and push the pin;
+26. ensure `FIXTURE_COMMIT_PLACEHOLDER` is absent before final submission.
+
+Do not point the live proof at mutable `main` URLs.
+
+LIVE STUDIONET PROOF
+After Direct Mode and linting are green, execute the complete lifecycle on stable Studionet chain 61999.
+Use the immutable fixture URLs in `docs/LIVE_FIXTURES.md`.
+
+The final live proof must demonstrate at minimum:
+
+- Corroborate deploys successfully on chain 61999;
+- a case is created with threshold 2 and a non-empty 64-hex definition hash;
+- all five example evidence URLs are submitted, then the case is sealed;
+- the sealed evidence set has a non-empty 64-hex evidence_set_hash;
+- real public fixture evidence reaches consensus-backed stance classifications;
+- the derivative support source is not counted as a third independent support origin;
+- all required countable evidence pairs receive real consensus-backed pair decisions;
+- finalization rejects before the pair matrix is complete (capture real rejection evidence if practical);
+- finalization succeeds once complete;
+- the deterministic result shows 2 support clusters, 1 contradiction cluster, 0 mixed clusters, and SUPPORT_CORROBORATED for the supplied fixture scenario, unless an honestly observed semantic classification differs — if it differs, investigate the prompts/fixtures and document the real result rather than fabricating expected proof;
+- a non-empty matrix_hash and finalization_hash exist;
+- EvidenceGate is deployed with the finalized Corroborate address;
+- a correctly pinned SUPPORTS gate action succeeds;
+- wrong-definition-hash execution is rejected;
+- wrong-finalization-hash execution is rejected;
+- action replay is rejected.
+
+If current stable tooling requires fee estimation/caps, use the supported stable Studionet fee-estimation path. Do not change networks as a workaround.
+
+FINAL DOCUMENTATION
+Update DEPLOYMENT.md only with evidence actually produced:
+
+- finalized Corroborate address;
+- Corroborate deployment transaction;
+- finalized EvidenceGate address;
+- EvidenceGate deployment transaction;
+- case creation transaction;
+- evidence submission transactions;
+- seal transaction;
+- evidence assessment transactions;
+- pair classification transactions;
+- any meaningful rejected transaction evidence;
+- finalization transaction;
+- successful gate transaction;
+- wrong-hash rejection evidence;
+- replay rejection evidence;
+- definition hash;
+- evidence-set hash;
+- matrix hash;
+- finalization hash;
+- raw/countable evidence counts;
+- independent support/contradiction/mixed cluster counts;
+- final verdict;
+- exact test/lint/preflight commands and real outputs.
+
+If current stable tooling makes any starter command inaccurate, correct the docs to the command that actually worked.
+
+FINAL GATES
+Before the final push:
+
+- `python scripts/preflight.py --final` must pass;
+- Python compilation must pass;
+- all unit/static tests must pass;
+- all GenLayer Direct Mode tests must pass;
+- the current stable GenVM linter must pass;
+- the complete live Studionet lifecycle must pass;
+- no secrets, private keys, `.env`, virtual environments, caches, generated artifacts, or unrelated files may be tracked;
+- there must be no frontend;
+- every network reference must remain stable Studionet / chain 61999;
+- inspect `git diff`, `git status`, tracked files, commit history, and the final GitHub repository after push.
+
+Do not claim completion until all applicable checks actually pass and the remote repository contains the final committed code.
+
+At the end, report exactly:
+1. what you changed;
+2. real Direct Mode/unit/lint/preflight results;
+3. real Studionet contract addresses and transaction evidence;
+4. final definition/evidence-set/matrix/finalization hashes and cluster counts;
+5. final 40-character Git commit SHA;
+6. any limitation that genuinely remains.
